@@ -1,8 +1,5 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+ <html class="no-js" lang=""> 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,6 +23,8 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 </head>
 <body>
@@ -50,54 +49,19 @@
                     <h3 class="menu-title"><i class="fa fa-suitcase" aria-hidden="true"></i> Courses</h3><!-- /.menu-title -->
                     
                     <li><a href="tables-courses.html">All Courses</a></li>
-                    <li><a href="forms-courses.html">New Course</a></li>
-
-                    <li class="menu-item-has-children dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Batch</a>
-                            <ul class="sub-menu children dropdown-menu">
-                                <li><a href="tables-courses.html">All Batches</a></li>
-                                <li><a href="forms-basic.html">New Batch</a></li>
-                                <li class="menu-item-has-children dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Lectures</a>
-                                        <ul>
-                                            <li><i class="fa fa-table"></i><a href="tables-courses.html">All Lectures</a></li>
-                                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">New Lectures</a></li>
-                                        </ul>
-                                </li>
-                                <li class="menu-item-has-children dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Students</a>
-                                        <ul>
-                                            <li><i class="fa fa-table"></i><a href="tables-courses.html">All Students</a></li>
-                                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">New Admission to Batch</a></li>
-                                        </ul>
-                                </li>
-                            </ul>
-                    </li>
-
+                    <li><a href="forms-courses.html">New Course</a></li>              
                   
                     <h3 class="menu-title"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Students</h3><!-- /.menu-title -->
 
-                    <li><a href="tables-courses.html">All Students</a></li>
-                    <li><a href="forms-courses.html">New Student</a></li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Search Student</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-table"></i><a href="font-fontawesome.html">See Details</a></li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="font-themify.html">Enroll to Batch</a></li>
-                        </ul>
-                    </li>
-
-
+                    <li><a href="tables-students.html">All Students</a></li>
+                   
                     <h3 class="menu-title"><i class="menu fa fa-book"></i> Subjects</h3><!-- /.menu-title -->
 
-                    <li><a href="tables-courses.html">All Subjects</a></li>
-                    <li><a href="forms-courses.html">New Subject</a></li>
-
-
+                    <li><a href="tables-subjects.html">All Subjects</a></li>
+                   
                     <h3 class="menu-title"><i class="fa fa-user" aria-hidden="true"></i> Teachers</h3><!-- /.menu-title -->
 
-                    <li><a href="tables-courses.html">All Teachers</a></li>
-                    <li><a href="forms-courses.html">New Teacher</a></li>
+                    <li><a href="tables-teachers.html">All Teachers</a></li>                   
 
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -129,41 +93,59 @@
             </div>
         </div>
 
+
+        <div class="content mt-3">
+                <div class="animated fadeIn">
+                    <div id="app" class="row">
+    
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">{{title}}</strong>
+                            </div>
+                           
+                            <div v-for="batch in batches">
+                                    <div class="card-body" v-if="batch.batchName[3]>'8'">                                                                           
+                                            {{batch.batchName}}   
+                                     </div>
+                            </div>
+                                
+                        </div>
+                    </div>
+    
+                    </div><!--row end-->
+                </div><!-- .animated -->
+            </div><!-- .content -->
+
     </div><!-- /#right-panel -->
 
     <!-- Right Panel -->
+
+    <script>
+            let app = new Vue({
+                el: '#app',
+                data: {
+                    title:'Upcoming Batches',
+                    batches:[]                               
+                },
+                created() {
+                    axios.get('http://localhost:5555/api/batches')
+                        .then((response) => {
+                            this.batches=response.data
+                            
+                        })
+                        .catch((err)=>{
+                            console.log(err)
+                        })                     
+                }
+               
+            })
+        </script>
 
     <script src="assets/js/vendor/jquery-2.1.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
-
-
-    <script src="assets/js/lib/chart-js/Chart.bundle.js"></script>
-    <script src="assets/js/dashboard.js"></script>
-    <script src="assets/js/widgets.js"></script>
-    <script src="assets/js/lib/vector-map/jquery.vmap.js"></script>
-    <script src="assets/js/lib/vector-map/jquery.vmap.min.js"></script>
-    <script src="assets/js/lib/vector-map/jquery.vmap.sampledata.js"></script>
-    <script src="assets/js/lib/vector-map/country/jquery.vmap.world.js"></script>
-    <script>
-        ( function ( $ ) {
-            "use strict";
-
-            jQuery( '#vmap' ).vectorMap( {
-                map: 'world_en',
-                backgroundColor: null,
-                color: '#ffffff',
-                hoverOpacity: 0.7,
-                selectedColor: '#1de9b6',
-                enableZoom: true,
-                showTooltip: true,
-                values: sample_data,
-                scaleColors: [ '#1de9b6', '#03a9f5' ],
-                normalizeFunction: 'polynomial'
-            } );
-        } )( jQuery );
-    </script>
 
 </body>
 </html>

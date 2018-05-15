@@ -6,6 +6,7 @@ const Batch_1 = require("../../models/Batch");
 const Lecture_1 = require("../../models/Lecture");
 const Teacher_1 = require("../../models/Teacher");
 const Student_1 = require("../../models/Student");
+const Subject_1 = require("../../models/Subject");
 exports.courses = express_1.Router();
 exports.courses.get('/', (req, res) => {
     return Course_1.Courses.findAll({
@@ -26,7 +27,7 @@ exports.courses.get('/:id', (req, res) => {
         where: { id: [req.params.id] }
     })
         .then((course) => {
-        res.status(200).send(course);
+        res.status(200).json(course);
     })
         .catch((err) => {
         res.status(500).send({
@@ -90,7 +91,12 @@ exports.courses.get('/:id/batches/:bid/lectures', (req, res) => {
                     cid: [req.params.id],
                     id: [req.params.bid]
                 }
-            }]
+            },
+            {
+                model: Teacher_1.Teachers,
+                attributes: ['teacherName']
+            }
+        ]
     })
         .then((lectures) => {
         res.status(200).send(lectures);
@@ -98,6 +104,20 @@ exports.courses.get('/:id/batches/:bid/lectures', (req, res) => {
         .catch((err) => {
         res.status(500).send({
             error: 'Error retreiving lectures ' + err
+        });
+    });
+});
+exports.courses.post('/:id/batches/:bid/lectures', (req, res) => {
+    return Lecture_1.Lectures.create({
+        bid: req.params.bid,
+        tid: req.body.tid
+    })
+        .then((lecture) => {
+        res.status(200).json(lecture);
+    })
+        .catch((err) => {
+        res.status(500).send({
+            error: 'Error creating lecture ' + err
         });
     });
 });
@@ -131,54 +151,40 @@ exports.courses.get('/:id/batches/:bid/lectures/:lid', (req, res) => {
     });
 });
 exports.courses.get('/:id/batches/:bid/teachers', (req, res) => {
-    return Lecture_1.Lectures.findAll({
-        attributes: ['id'],
-        include: [{
-                model: Batch_1.Batches,
-                attributes: ['batchName'],
+    Teacher_1.Teachers.findAll({
+        attributes: ['id', 'teacherName'],
+        include: [
+            {
+                model: Subject_1.Subjects,
+                attributes: ['id', 'subjectName'],
                 include: [{
                         model: Course_1.Courses,
-                        attributes: ['courseName'],
-                        required: true
+                        attributes: ['id']
                     }],
-                where: {
-                    cid: [req.params.id],
-                    id: [req.params.bid]
-                }
-            },
-            {
-                model: Teacher_1.Teachers,
-                attributes: ['teacherName']
-            }],
-        group: ['tid']
+                where: { cid: [req.params.id] }
+            }
+        ]
     })
-        .then((lectures) => {
-        res.status(200).send(lectures);
+        .then((teachers) => {
+        res.status(200).json(teachers);
     })
         .catch((err) => {
         res.status(500).send({
-            error: 'Error retreiving lectures ' + err
+            error: 'Error retreiving teachers ' + err
         });
     });
 });
 exports.courses.get('/:id/batches/:bid/students', (req, res) => {
-    return Batch_1.Batches.findAll({
+    return Batch_1.Batches.find({
         attributes: ['batchName'],
         include: [{
-                model: Course_1.Courses,
-                attributes: ['courseName'],
-            },
-            {
                 model: Student_1.Students,
-                attributes: ['studentName']
+                attributes: ['studentRoll', 'studentName']
             }],
-        where: {
-            cid: [req.params.id],
-            id: [req.params.bid]
-        }
+        where: { id: [req.params.bid] }
     })
-        .then((students) => {
-        res.status(200).send(students);
+        .then((result) => {
+        res.status(200).json(result);
     })
         .catch((err) => {
         res.status(500).send({
@@ -230,7 +236,7 @@ exports.courses.post('/:id/batches', (req, res) => {
         cid: req.params.id
     })
         .then((batch) => {
-        res.status(200).send(batch);
+        res.status(200).json(batch);
     })
         .catch((err) => {
         res.status(500).send({

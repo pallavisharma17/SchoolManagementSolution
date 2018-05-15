@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sufee Admin - HTML5 Admin Template</title>
+    <title>School Management Solution</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -22,6 +22,8 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 </head>
 <body>
@@ -44,54 +46,20 @@
                         <h3 class="menu-title"><i class="fa fa-suitcase" aria-hidden="true"></i> Courses</h3><!-- /.menu-title -->
                         
                         <li><a href="tables-courses.html">All Courses</a></li>
-                        <li><a href="forms-courses.html">New Course</a></li>
-    
-                        <li class="menu-item-has-children dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Batch</a>
-                                <ul class="sub-menu children dropdown-menu">
-                                    <li><a href="tables-courses.html">All Batches</a></li>
-                                    <li><a href="forms-basic.html">New Batch</a></li>
-                                    <li class="menu-item-has-children dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Lectures</a>
-                                            <ul>
-                                                <li><i class="fa fa-table"></i><a href="tables-courses.html">All Lectures</a></li>
-                                                <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">New Lectures</a></li>
-                                            </ul>
-                                    </li>
-                                    <li class="menu-item-has-children dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Students</a>
-                                            <ul>
-                                                <li><i class="fa fa-table"></i><a href="tables-courses.html">All Students</a></li>
-                                                <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">New Admission to Batch</a></li>
-                                            </ul>
-                                    </li>
-                                </ul>
-                        </li>
-    
+                        <li><a href="forms-courses.html">New Course</a></li>                          
                       
                         <h3 class="menu-title"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Students</h3><!-- /.menu-title -->
     
                         <li><a href="tables-courses.html">All Students</a></li>
-                        <li><a href="forms-courses.html">New Student</a></li>
-                        <li class="menu-item-has-children dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Search Student</a>
-                            <ul class="sub-menu children dropdown-menu">
-                                <li><i class="fa fa-table"></i><a href="font-fontawesome.html">See Details</a></li>
-                                <li><i class="menu-icon fa fa-th"></i><a href="font-themify.html">Enroll to Batch</a></li>
-                            </ul>
-                        </li>
-    
-    
+                        
                         <h3 class="menu-title"><i class="menu fa fa-book"></i> Subjects</h3><!-- /.menu-title -->
     
-                        <li><a href="tables-courses.html">All Subjects</a></li>
-                        <li><a href="forms-courses.html">New Subject</a></li>
-    
-    
+                        <li><a href="tables-subjects.html">All Subjects</a></li>
+                           
                         <h3 class="menu-title"><i class="fa fa-user" aria-hidden="true"></i> Teachers</h3><!-- /.menu-title -->
     
-                        <li><a href="tables-courses.html">All Teachers</a></li>
-                        <li><a href="forms-courses.html">New Teacher</a></li>
+                        <li><a href="tables-teachers.html">All Teachers</a></li>
+                       
     
                     </ul>
                 </div><!-- /.navbar-collapse -->
@@ -119,7 +87,7 @@
             <div class="animated fadeIn">
                 <div class="row">
 
-                        <div class="card">
+                        <div class="card" id="app">
                                 <div class="card-header">
                                   <strong>Enter Details of new Course</strong>
                                 </div>
@@ -127,16 +95,16 @@
                                   <form action="" method="post" class="form-horizontal">
                                     <div class="row form-group">
                                       <div class="col col-md-3"><label class=" form-control-label">Name</label></div>
-                                      <div class="col-12 col-md-9"><input type="text" placeholder="Enter Coursename..." class="form-control"></div>
+                                      <div class="col-12 col-md-9"><input type="text" placeholder="Enter Coursename..." class="form-control" v-model="courseName"></div>
                                     </div>
                                   </form>
                                 </div>
                                 <div class="card-footer">
-                                  <button type="submit" class="btn btn-primary btn-sm">
+                                  <button type="submit" class="btn btn-primary btn-sm" v-on:click="addCourse">
                                     <i class="fa fa-dot-circle-o"></i> Submit
                                   </button>
                                 </div>
-                              </div>
+                        </div>
 
                 </div>
             </div><!-- .animated -->
@@ -147,6 +115,36 @@
 
     <!-- Right Panel -->
 
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                courseName: '',
+                courses: []
+            },
+            methods: {
+                addCourse() {
+
+                    let url = 'http://localhost:5555/api/courses'
+                    let param = {
+                        courseName: this.courseName,
+                    }
+                    axios.post(url, param)
+                        .then((response) => {
+                            if (response.data.loginError)
+                                return alert(response.data.loginError)
+                            alert("Course added successfully !!")
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+
+                    this.courseName = ''
+                }
+            }
+        })
+    </script>
 
     <script src="assets/js/vendor/jquery-2.1.4.min.js"></script>
     <script src="assets/js/popper.min.js"></script>

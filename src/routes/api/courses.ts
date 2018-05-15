@@ -4,6 +4,7 @@ import { Batches } from '../../models/Batch'
 import { Lectures } from '../../models/Lecture'
 import { Teachers } from '../../models/Teacher'
 import { Students } from '../../models/Student'
+import { Subjects } from '../../models/Subject'
 
 export const courses: Router = Router();
 
@@ -27,7 +28,7 @@ courses.get('/:id', (req, res) => {
         where: { id: [req.params.id] }
     })
         .then((course) => {
-            res.status(200).send(course);
+            res.status(200).json(course);
         })
         .catch((err) => {
             res.status(500).send({
@@ -97,7 +98,12 @@ courses.get('/:id/batches/:bid/lectures', (req, res) => {
                 cid: [req.params.id],
                 id: [req.params.bid]
             }
-        }]
+        },
+        {
+            model: Teachers,
+            attributes: ['teacherName']
+        }
+        ]
     })
         .then((lectures) => {
             res.status(200).send(lectures);
@@ -108,6 +114,22 @@ courses.get('/:id/batches/:bid/lectures', (req, res) => {
             })
         })
 });
+
+courses.post('/:id/batches/:bid/lectures', (req, res) => {
+    return Lectures.create({
+        bid: req.params.bid,
+        tid: req.body.tid
+    })
+        .then((lecture) => {
+            res.status(200).json(lecture);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                error: 'Error creating lecture ' + err
+            })
+        })
+});
+
 
 courses.get('/:id/batches/:bid/lectures/:lid', (req, res) => {
     return Lectures.findOne({
@@ -142,57 +164,45 @@ courses.get('/:id/batches/:bid/lectures/:lid', (req, res) => {
 });
 
 courses.get('/:id/batches/:bid/teachers', (req, res) => {
-    return Lectures.findAll({
-        attributes: ['id'],
-        include: [{
-            model: Batches,
-            attributes: ['batchName'],
+    Teachers.findAll({
+        attributes: ['id', 'teacherName'],
+        include: [
+            {
+                model: Subjects,
+                attributes: ['id', 'subjectName'],
 
-            include: [{
-                model: Courses,
-                attributes: ['courseName'],
-                required: true
-            }],
+                include: [{
+                    model: Courses,
+                    attributes: ['id']
+                }],
 
-            where: {
-                cid: [req.params.id],
-                id: [req.params.bid]
+                where: { cid: [req.params.id] }
             }
-        },
-        {
-            model: Teachers,
-            attributes: ['teacherName']
-        }],
-        group: ['tid']
+        ]
     })
-        .then((lectures) => {
-            res.status(200).send(lectures);
+        .then((teachers) => {
+            res.status(200).json(teachers);
         })
         .catch((err) => {
             res.status(500).send({
-                error: 'Error retreiving lectures ' + err
+                error: 'Error retreiving teachers ' + err
             })
-        })
-});
+        });
+})
+
 
 courses.get('/:id/batches/:bid/students', (req, res) => {
-    return Batches.findAll({
+   
+    return Batches.find({
         attributes: ['batchName'],
         include: [{
-            model: Courses,
-            attributes: ['courseName'],
-        },
-        {
             model: Students,
-            attributes: ['studentName']
+            attributes: ['studentRoll', 'studentName']
         }],
-        where: {
-            cid: [req.params.id],
-            id: [req.params.bid]
-        }
+        where: { id: [req.params.bid] }
     })
-        .then((students) => {
-            res.status(200).send(students);
+        .then((result) => {
+            res.status(200).json(result);
         })
         .catch((err) => {
             res.status(500).send({
@@ -251,7 +261,7 @@ courses.post('/:id/batches', (req, res) => {
         cid: req.params.id
     })
         .then((batch) => {
-            res.status(200).send(batch);
+            res.status(200).json(batch);
         })
         .catch((err) => {
             res.status(500).send({

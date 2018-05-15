@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Student_1 = require("../../models/Student");
 const Batch_1 = require("../../models/Batch");
+const Batch_2 = require("../../models/Batch");
 exports.students = express_1.Router();
 exports.students.get('/', (req, res) => {
     return Student_1.Students.findAll({
@@ -50,17 +51,17 @@ exports.students.get('/:id/batches', (req, res) => {
     });
 });
 //add a student
-exports.students.post('/', (req, res) => {
-    return Student_1.Students.create({
-        studentRoll: req.body.studentRoll,
-        studentName: req.body.studentName,
+exports.students.post('/:id/batches', (req, res) => {
+    return Batch_2.BatchStudent.create({
+        batchId: req.body.batchId,
+        studentId: req.params.id
     })
-        .then((student) => {
-        res.status(200).send(student);
+        .then((batchStudent) => {
+        res.status(200).json(batchStudent);
     })
         .catch((err) => {
         res.status(500).send({
-            error: 'Error creating student ' + err
+            error: 'Error enrolling in batch ' + err
         });
     });
 });
@@ -84,6 +85,21 @@ exports.students.delete('/:id', (req, res) => {
         .catch((err) => {
         res.status(500).send({
             error: 'Error deleting student ' + err
+        });
+    });
+});
+//add new student
+exports.students.post('/', (req, res) => {
+    return Student_1.Students.create({
+        studentRoll: req.body.studentRoll,
+        studentName: req.body.studentName
+    })
+        .then((student) => {
+        res.status(200).json(student);
+    })
+        .catch((err) => {
+        res.status(500).send({
+            error: 'Error creating student ' + err
         });
     });
 });

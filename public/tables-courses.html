@@ -1,12 +1,9 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+ <html class="no-js" lang=""> 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sufee Admin - HTML5 Admin Template</title>
+    <title>School Management Solution</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -48,56 +45,21 @@
                         </li>
                         <h3 class="menu-title"><i class="fa fa-suitcase" aria-hidden="true"></i> Courses</h3><!-- /.menu-title -->
                         
-                        <li><a href="tables-courses.html">All Courses</a></li>
+                        <li><a href="tables-courses.html">All Courses</a></li>            
                         <li><a href="forms-courses.html">New Course</a></li>
-    
-                        <li class="menu-item-has-children dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Batch</a>
-                                <ul class="sub-menu children dropdown-menu">
-                                    <li><a href="tables-courses.html">All Batches</a></li>
-                                    <li><a href="forms-basic.html">New Batch</a></li>
-                                    <li class="menu-item-has-children dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Lectures</a>
-                                            <ul>
-                                                <li><i class="fa fa-table"></i><a href="tables-courses.html">All Lectures</a></li>
-                                                <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">New Lectures</a></li>
-                                            </ul>
-                                    </li>
-                                    <li class="menu-item-has-children dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Students</a>
-                                            <ul>
-                                                <li><i class="fa fa-table"></i><a href="tables-courses.html">All Students</a></li>
-                                                <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">New Admission to Batch</a></li>
-                                            </ul>
-                                    </li>
-                                </ul>
-                        </li>
-    
-                      
+                                     
                         <h3 class="menu-title"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Students</h3><!-- /.menu-title -->
     
-                        <li><a href="tables-courses.html">All Students</a></li>
-                        <li><a href="forms-courses.html">New Student</a></li>
-                        <li class="menu-item-has-children dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Search Student</a>
-                            <ul class="sub-menu children dropdown-menu">
-                                <li><i class="fa fa-table"></i><a href="font-fontawesome.html">See Details</a></li>
-                                <li><i class="menu-icon fa fa-th"></i><a href="font-themify.html">Enroll to Batch</a></li>
-                            </ul>
-                        </li>
-    
-    
+                        <li><a href="tables-students.html">All Students</a></li>                       
+                       
                         <h3 class="menu-title"><i class="menu fa fa-book"></i> Subjects</h3><!-- /.menu-title -->
     
-                        <li><a href="tables-courses.html">All Subjects</a></li>
-                        <li><a href="forms-courses.html">New Subject</a></li>
-    
-    
+                        <li><a href="tables-subjects.html">All Subjects</a></li>                
+        
                         <h3 class="menu-title"><i class="fa fa-user" aria-hidden="true"></i> Teachers</h3><!-- /.menu-title -->
     
-                        <li><a href="tables-courses.html">All Teachers</a></li>
-                        <li><a href="forms-courses.html">New Teacher</a></li>
-    
+                        <li><a href="tables-teachers.html">All Teachers</a></li>
+                       
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </nav>
@@ -114,7 +76,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>All Courses</h1>
+                        <h1>Courses Dashboard</h1>
                     </div>
                 </div>
             </div>
@@ -122,19 +84,25 @@
 
         <div class="content mt-3">
             <div class="animated fadeIn">
-                <div class="row">
+                <div id="app" class="row">
 
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">All Courses</strong>
+                            <strong class="card-title">{{title}}</strong>
                         </div>
-                        <div id="app" class="card-body">
+
+                        <div class="card-body" v-if="showCourses==true">
+
+                           <p>
+                                <a href="forms-courses.html">New Course?</a>
+                           </p>
                             <table class="table">
-                              <thead class="thead-dark">
+                              <thead class="thead-dark" >
                                 <tr>
                                   <th scope="col">Course Number</th>
                                   <th scope="col">Course Name</th>
+                                  <th scope="col">Actions</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -146,16 +114,200 @@
                                             <td>
                                                 {{course.courseName}}
                                             </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-primary btn-sm" v-on:click="getBatches(course.id)">
+                                                    <i class="fa fa-dot-circle-o"></i> Batches
+                                                  </button>
+                                            </td>
                                         </tr>
                                 
                               </tbody>
                             </table>
-
                         </div>
+
+                        <div class="card-body" v-if="showBatches==true">
+                            <p>
+                                    <button type="submit" class="btn btn-primary btn-sm" v-on:click="showaddBatchForm">
+                                        New Batch ?
+                                    </button> 
+
+                                    <div class="card" v-if="showBatchForm==true">
+
+                                            <div class="card-header">
+                                              <strong>Enter Details of new Batch</strong>
+                                            </div>
+
+                                            <div class="card-body card-block">
+                                              <form action="" method="post" class="form-horizontal">
+                                                <div class="row form-group">
+                                                  <div class="col col-md-3"><label class=" form-control-label">Name</label></div>
+                                                  <div class="col-12 col-md-9"><input type="text" placeholder="Enter Batchname..." class="form-control" v-model="batchName"></div>
+                                                </div>
+                                              </form>
+                                            </div>
+
+                                            <div class="card-footer">
+                                              <button type="submit" class="btn btn-primary btn-sm" v-on:click="addBatch">
+                                                Add new Batch to Course
+                                              </button>
+                                            </div>
+                                    </div>
+
+                            </p>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th scope="col">Batch Number</th>
+                                    <th scope="col">Batch Name</th>
+                                    <th scope="col">Actions</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                                                      
+                                          <tr v-for="batch in batches">
+                                              <td>
+                                                  {{batch.id}}
+                                              </td>
+                                              <td>
+                                                  {{batch.batchName}}
+                                              </td>
+                                              <td>
+                                                  <button type="submit" class="btn btn-primary btn-sm"  v-on:click="getLectures(batch.id)">
+                                                      <i class="fa fa-dot-circle-o"></i> Lectures
+                                                  </button>
+                                                  <button type="submit" class="btn btn-primary btn-sm" v-on:click="getStudents(batch.id)">
+                                                    <i class="fa fa-dot-circle-o"></i> Students
+                                                </button>
+                                              </td>
+                                          </tr>
+                                  
+                                </tbody>
+                              </table>
+   
+                        </div>
+
+                        <div class="card-body" v-if="showLectures==true">
+                                <p>
+                                        <button type="submit" class="btn btn-primary btn-sm" v-on:click="showaddLectureForm">
+                                            New Lecture ?
+                                        </button> 
+    
+                                        <div class="card" v-if="showLectureForm==true">
+    
+                                                <div class="card-header">
+                                                  <strong>Enter Details of new Lecture</strong>
+                                                </div>
+    
+                                                <div class="card-body card-block">
+                                                  <form action="" method="post" class="form-horizontal">
+                                                    <div class="row form-group">
+                                                      <div class="col col-md-3">
+
+                                                            <label>Select Teacher:</label>
+                                                            <select class="form-control" v-model="teacherId" >
+                                                                <option v-for="teacher in teachers"  v-bind:value="teacher.id">{{teacher.teacherName}}</option>
+                                                            </select>
+                                                      </div>
+                                                      
+                                                    </div>
+                                                  </form>
+                                                </div>
+    
+                                                <div class="card-footer">
+                                                  <button type="submit" class="btn btn-primary btn-sm" v-on:click="addLecture">
+                                                    Add Lecture
+                                                  </button>
+                                                </div>
+                                        </div>
+    
+                                </p>
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                      <tr>
+                                        <th scope="col">Lecture Number</th>
+                                        <th scope="col"> Teacher</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                                                          
+                                              <tr v-for="lecture in lectures">
+                                                  <td>
+                                                      {{lecture.id}}
+                                                  </td>
+                                                  <td>
+                                                      {{lecture.teacher.teacherName}}
+                                                  </td>
+                                                  
+                                              </tr>
+                                      
+                                    </tbody>
+                                  </table>
+    
+                                  
+                            </div><!--Lecture ends-->
+
+                            <div class="card-body" v-if="showStudents==true">
+                                    <p>
+                                            <button type="submit" class="btn btn-primary btn-sm" v-on:click="showaddStudentForm">
+                                                New Student ?
+                                            </button> 
+        
+                                            <div class="card" v-if="showStudentForm==true">
+        
+                                                    <div class="card-header">
+                                                      <strong>Select Student to Enroll in this Batch</strong>
+                                                    </div>
+        
+                                                    <div class="card-body card-block">
+                                                      <form action="" method="post" class="form-horizontal">
+                                                        <div class="row form-group">
+                                                          <div class="col col-md-3">
+    
+                                                                <select class="form-control" v-model="studentId" >
+                                                                    <option v-for="student in allStudents"  v-bind:value="student.id">{{student.studentRoll}} {{student.studentName}}</option>
+                                                                </select>
+                                                          </div>
+                                                          
+                                                        </div>
+                                                      </form>
+                                                    </div>
+        
+                                                    <div class="card-footer">
+                                                      <button type="submit" class="btn btn-primary btn-sm" v-on:click="addStudent">
+                                                        Add Student
+                                                      </button>
+                                                    </div>
+                                            </div>
+        
+                                    </p>
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th scope="col"> Roll Number</th>
+                                            <th scope="col"> Name</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                                                              
+                                                  <tr v-for="student in students">
+                                                      <td>
+                                                          {{student.studentRoll}}
+                                                      </td>
+                                                      <td>
+                                                          {{student.studentName}}
+                                                      </td>
+                                                      
+                                                  </tr>
+                                          
+                                        </tbody>
+                                      </table>
+        
+                                      
+                                </div>
                     </div>
                 </div>
 
-                </div>
+                </div><!--row end-->
             </div><!-- .animated -->
         </div><!-- .content -->
 
@@ -169,18 +321,192 @@
             let app = new Vue({
                 el: '#app',
                 data: {
-                    courses: []
+                    showCourses:true,
+                    showBatches:false,
+                    title:'All Courses',
+                    courseId:'',
+                    courses: [],
+                    batches: [],
+                    showBatchForm:false,
+                    batchName:'',
+                    showLectures:false,
+                    batchId:'',
+                    lectures:[],
+                    showLectureForm:false,
+                    teachers:[],
+                    teacherId:'',
+                    showStudents:false,
+                    students:[],
+                    showStudentForm:false,
+                    allStudents:[],
+                    studentId:''
                 },
                 created() {
                     axios.get('http://localhost:5555/api/courses')
                         .then((response) => {
                             this.courses = response.data;
-                            console.log(this.courses)
                         })
                         .catch((err)=>{
                             console.log(err)
                         })
+                },
+                methods: {
+                getBatches(cid) {
+                    this.showCourses=false;
+                    this.showBatches=true;
+
+                    let url = 'http://localhost:5555/api/courses/'
+                    this.courseId=cid;            
+
+                    axios.get(url+cid+'/batches')
+                        .then((response) => {
+                            this.showCourse=false;
+                            this.title="This Course's Batches"
+                            this.batches=response.data;
+                            console.log(response.data)
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+
+                },
+
+                showaddBatchForm(){
+                    this.showBatchForm=true
+                },
+                addBatch(){
+                    
+                    let url = 'http://localhost:5555/api/courses/';
+                    let param = {
+                        batchName: this.batchName,
+                    }
+                    axios.post(url+this.courseId+'/batches', param)
+                        .then((response) => {
+                            this.getBatches(this.courseId);
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+
+                    this.showBatchForm=false;
+                    this.batchName = ''
+                },
+
+                getLectures(bid){
+                    this.batchId=bid;
+                    this.showBatches=false;
+                    this.showLectures=true;
+
+
+                    let url = 'http://localhost:5555/api/courses/'
+                   
+                    axios.get(url+this.courseId+'/batches/'+bid+'/lectures')
+                        .then((response) => {
+                          
+                            this.title="This Batch's Lectures"
+                            this.lectures=response.data;
+                            console.log(response.data)
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+
+                },
+
+                showaddLectureForm(){
+                    this.showLectureForm=true;
+                    this.showStudentForm=false;
+                    let url = 'http://localhost:5555/api/courses/'
+
+                    axios.get(url+this.courseId+'/batches/'+this.batchId+'/teachers')
+                        .then((response) => {
+                            this.teachers=response.data;
+                            console.log(response.data)
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+                },
+
+                addLecture(){
+
+                    let url = 'http://localhost:5555/api/courses/'+this.courseId+'/batches/'+this.batchId+'/lectures';
+                    let param = {
+                        tid: this.teacherId,
+                    }
+                    axios.post(url, param)
+                        .then((response) => {
+                            this.getLectures(this.batchId);
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+
+                    this.showLectureForm=false;
+                },
+
+                getStudents(bid){
+                    this.batchId=bid;
+                    this.showBatches=false;
+                    this.showStudents=true;
+
+                    let url = 'http://localhost:5555/api/courses/'+this.courseId+'/batches/'+bid+'/students'
+                   
+                    axios.get(url)
+                        .then((response) => {
+                          
+                            this.title="This Batch's Students"
+                            this.students=response.data.students;
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+
+                },
+
+                 showaddStudentForm(){
+                    this.showStudentForm=true;
+                    this.showLectureForm=false;
+                    let url = 'http://localhost:5555/api/students';
+
+                    axios.get(url)
+                        .then((response) => {
+                            this.allStudents=response.data;
+                            console.log(response.data)
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+                },
+
+                addStudent(){
+
+                     this.showLectureForm=false;
+                     this.showStudentForm=false;
+                    let url = 'http://localhost:5555/api/students/'+this.studentId+'/batches';
+                    let param = {
+                        batchId: this.batchId,
+                    }
+                    axios.post(url, param)
+                        .then((response) => {
+                            this.getStudents(this.batchId);
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+
+                   
                 }
+
+            }
             })
         </script>
 

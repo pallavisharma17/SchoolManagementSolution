@@ -1,0 +1,250 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>School Management Solution</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/flag-icon.min.css">
+    <link rel="stylesheet" href="assets/css/cs-skin-elastic.css">
+    <!-- <link rel="stylesheet" href="assets/css/bootstrap-select.less"> -->
+    <link rel="stylesheet" href="assets/scss/style.css">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+
+</head>
+<body>
+        <!-- Left Panel -->
+
+    <aside id="left-panel" class="left-panel">
+            <nav class="navbar navbar-expand-sm navbar-default">
+    
+                <div class="navbar-header">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+    
+                <div id="main-menu" class="main-menu collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="index.html"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                        </li>
+                        <h3 class="menu-title"><i class="fa fa-suitcase" aria-hidden="true"></i> Courses</h3><!-- /.menu-title -->
+                        
+                        <li><a href="tables-courses.html">All Courses</a></li>
+                        <li><a href="forms-courses.html">New Course</a></li>
+                                      
+                        <h3 class="menu-title"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Students</h3><!-- /.menu-title -->
+    
+                        <li><a href="tables-students.html">All Students</a></li>                      
+                          
+                        <h3 class="menu-title"><i class="menu fa fa-book"></i> Subjects</h3><!-- /.menu-title -->
+    
+                        <li><a href="tables-subjects.html">All Subjects</a></li>
+                            
+                        <h3 class="menu-title"><i class="fa fa-user" aria-hidden="true"></i> Teachers</h3><!-- /.menu-title -->
+    
+                        <li><a href="tables-teachers.html">All Teachers</a></li>                       
+    
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+        </aside><!-- /#left-panel -->
+    
+        <!-- Left Panel -->
+    
+
+    <!-- Right Panel -->
+
+    <div id="right-panel" class="right-panel">
+
+        <div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Subjects Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content mt-3">
+            <div class="animated fadeIn">
+                <div id="app" class="row">
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title">{{title}}</strong>
+                        </div>
+                       
+                            <div class="card-body">
+                                     <p>
+                                        <button type="submit" class="btn btn-primary btn-sm" v-on:click="showaddSubjectForm">
+                                        New Subject ?
+                                        </button> 
+                                                                               
+                                        <div class="card" v-if="showSubjectForm==true">
+    
+                                            <div class="card-header">
+                                            <strong>New subject</strong>
+                                            </div>
+        
+                                            <div class="card-body card-block">
+                                                <form action="" method="post" class="form-horizontal">
+                                                    <div class="row form-group">
+                                                        <div class="col col-md-3"><label class=" form-control-label">Subject Name</label></div>
+                                                        <div class="col-12 col-md-9"><input type="text" placeholder="Enter name..." class="form-control" v-model="subjectName"></div>
+                                                    </div>
+                                                    
+                                                    <div class="row form-group">
+                                                            <div class="col col-md-3">
+      
+                                                                  <select class="form-control" v-model="courseId" >
+                                                                      <option v-for="course in courses"  v-bind:value="course.id">{{course.courseName}}</option>
+                                                                  </select>
+                                                            </div>                                                            
+                                                    </div>
+
+                                                </form>
+                                            </div>
+       
+                                            <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary btn-sm" v-on:click="addSubject">
+                                             Add Subject
+                                            </button>
+                                            </div>
+
+                                        </div>
+                                               
+                                    </p> 
+                                   
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th scope="col"> Subject Id</th>  
+                                            <th scope="col"> Subject Name</th>                                           
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                                                              
+                                                  <tr v-for="subject in subjects">
+                                                      <td>
+                                                          {{subject.id}}
+                                                      </td>
+                                                      <td>
+                                                          {{subject.subjectName}}
+                                                      </td>                                                      
+                                                  </tr>
+                                          
+                                        </tbody>
+                                      </table>
+        
+                                      
+                                </div>
+                    </div>
+                </div>
+
+                </div><!--row end-->
+            </div><!-- .animated -->
+        </div><!-- .content -->
+
+
+    </div><!-- /#right-panel -->
+
+    <!-- Right Panel -->
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+            let app = new Vue({
+                el: '#app',
+                data: {
+                    title:'All Subjects',
+                    subjects:[],
+                    subjectName:'',
+                    courseId:'',
+                    showSubjectForm:false,
+                    courses:[]               
+                },
+                created() {
+                    axios.get('http://localhost:5555/api/subjects')
+                        .then((response) => {
+                            this.subjects = response.data;
+                        })
+                        .catch((err)=>{
+                            console.log(err)
+                        })                     
+                },
+                methods: {
+               
+                getSubjects() {
+                    axios.get('http://localhost:5555/api/subjects')
+                        .then((response) => {
+                            this.subjects = response.data;
+                        })
+                        .catch((err)=>{
+                            console.log(err)
+                        })
+                     },
+
+                 showaddSubjectForm(){
+                      
+                    axios.get('http://localhost:5555/api/courses')
+                        .then((response) => {
+                            this.courses = response.data;
+                        })
+                        .catch((err)=>{
+                            console.log(err)
+                        })
+
+                    this.showSubjectForm=true;     
+                },
+
+                addSubject(){
+
+                    let url = 'http://localhost:5555/api/subjects/'+this.courseId;
+                    let param = {                       
+                        subjectName: this.subjectName
+                    }
+                    axios.post(url, param)
+                        .then((response) => {
+                            this.getSubjects();
+                        })
+                        .catch((err) => {
+                            console.log(err.message)
+                            alert(err)
+                        })
+                       
+                        this.subjectName='',
+                        this.showSubjectForm=false;
+                }
+
+            }
+            })
+        </script>
+
+    <script src="assets/js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/main.js"></script>
+
+
+</body>
+</html>

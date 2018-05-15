@@ -11,9 +11,12 @@ export const Batches = db.define<Batch, any>('batch', {
     }
 })
 
+export const BatchStudent = db.define('BatchStudent', {
+
+})
 Batches.belongsTo(Courses, { foreignKey: 'cid' })
 
 Batches.belongsToMany(Students, {
-    through: 'BatchStudent', onDelete: 'cascade'
+    through: BatchStudent, onDelete: 'cascade'
 })
 

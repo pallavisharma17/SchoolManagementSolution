@@ -13,7 +13,8 @@ exports.Batches = db_1.db.define('batch', {
         allowNull: false
     }
 });
+exports.BatchStudent = db_1.db.define('BatchStudent', {});
 exports.Batches.belongsTo(Course_1.Courses, { foreignKey: 'cid' });
 exports.Batches.belongsToMany(Student_1.Students, {
-    through: 'BatchStudent', onDelete: 'cascade'
+    through: exports.BatchStudent, onDelete: 'cascade'
 });

@@ -52,10 +52,10 @@ subjects.get('/:id/teachers', (req, res) => {
 subjects.post('/:id', (req, res) => {
     return Subjects.create({
         subjectName: req.body.subjectName,
-        cid: req.body.id
+        cid: req.params.id
     })
         .then((subject) => {
-            res.status(200).send(subject);
+            res.status(200).json(subject);
         })
         .catch((err) => {
             res.status(500).send({

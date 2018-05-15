@@ -52,13 +52,13 @@ exports.teachers.get('/:id/batches', (req, res) => {
     });
 });
 //add a new teacher
-exports.teachers.post('/', (req, res) => {
+exports.teachers.post('/:id', (req, res) => {
     return Teacher_1.Teachers.create({
         teacherName: req.body.teacherName,
-        sid: req.body.sid
+        sid: req.params.id
     })
         .then((teacher) => {
-        res.status(200).send(teacher);
+        res.status(200).json(teacher);
     })
         .catch((err) => {
         res.status(500).send({

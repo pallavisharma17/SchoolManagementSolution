@@ -1,6 +1,7 @@
 import express, { Router, Request } from 'express'
 import { Students } from '../../models/Student'
 import { Batches } from '../../models/Batch'
+import { BatchStudent } from '../../models/Batch'
 
 export const students: Router = Router();
 
@@ -53,17 +54,17 @@ students.get('/:id/batches', (req, res) => {
 });
 
 //add a student
-students.post('/', (req, res) => {
-    return Students.create({
-        studentRoll: req.body.studentRoll,
-        studentName: req.body.studentName,
+students.post('/:id/batches', (req, res) => {
+    return BatchStudent.create({
+        batchId: req.body.batchId,
+        studentId: req.params.id
     })
-        .then((student) => {
-            res.status(200).send(student);
+        .then((batchStudent) => {
+            res.status(200).json(batchStudent);
         })
         .catch((err) => {
             res.status(500).send({
-                error: 'Error creating student ' + err
+                error: 'Error enrolling in batch ' + err
             })
         })
 })
@@ -92,6 +93,22 @@ students.delete('/:id', (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 error: 'Error deleting student ' + err
+            })
+        })
+})
+
+//add new student
+students.post('/', (req, res) => {
+    return Students.create({
+        studentRoll: req.body.studentRoll,
+        studentName: req.body.studentName
+    })
+        .then((student) => {
+            res.status(200).json(student);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                error: 'Error creating student ' + err
             })
         })
 })

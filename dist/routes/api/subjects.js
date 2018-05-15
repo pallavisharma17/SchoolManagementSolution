@@ -49,10 +49,10 @@ exports.subjects.get('/:id/teachers', (req, res) => {
 exports.subjects.post('/:id', (req, res) => {
     return Subject_1.Subjects.create({
         subjectName: req.body.subjectName,
-        cid: req.body.id
+        cid: req.params.id
     })
         .then((subject) => {
-        res.status(200).send(subject);
+        res.status(200).json(subject);
     })
         .catch((err) => {
         res.status(500).send({
